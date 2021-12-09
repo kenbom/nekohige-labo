@@ -2,16 +2,18 @@ import React from "react"
 import "../assets/css/main.css"
 import { useState } from "react"
 
-const QuoteGenerator = () => {
+const Quote = () => {
+  // const loader = "loader"
+  const [author, setAuthor] = useState("")
+  const [sentence, setSentence] = useState("Quote Generator")
+  const [showLoader, setShowLoader] = useState(false)
+  const quoteText = ""
   const loading = () => {
-    return true
+    setShowLoader(true)
   }
   const complete = () => {
     return true
   }
-  const [author, setAuthor] = useState("TestAuthorBom")
-  const [text, setText] = useState("TestTextKen")
-  const quoteText = "testText"
   async function getQuote() {
     loading()
     const proxyUrl = "https://whispering-tor-04671.herokuapp.com/"
@@ -20,23 +22,27 @@ const QuoteGenerator = () => {
     try {
       const response = await fetch(proxyUrl + apiUrl)
       const data = await response.json()
+      console.log(data)
       // If Author is blank, add 'Unknown'
       if (data.quoteAuthor === "") {
-        author = setAuthor()
+        setAuthor("unknown")
       } else {
-        author = data.quoteAuthor
+        setAuthor(data.quoteAuthor)
       }
       // Reduce font size for long quotes
-      if (data.quoteText.length > 120) {
-        quoteText.classList.add("long-quote")
-      } else {
-        quoteText.classList.remove("long-quote")
-      }
-      text = setText()
+      // if (data.quoteText.length > 120) {
+      //   quoteText.classList.add("long-quote")
+      // } else {
+      //   // quoteText.classList.remove("long-quote")
+      //   setSentence(data.quoteText)
+      // }
+
+      data.quoteText ? setSentence(data.quoteText) : setSentence("N.A")
+
       // Stop Loader, Show Quote
-      complete()
+      // complete()
     } catch (error) {
-      getQuote()
+      // getQuote()
     }
   }
   return (
@@ -58,7 +64,7 @@ const QuoteGenerator = () => {
         {/* Quote */}
         <div className="quote-text">
           <i className="fas fa-quote-left" />
-          <span id="quote">{text}</span>
+          <span id="quote">{sentence}</span>
         </div>
         {/* Author */}
         <div className="quote-author">
@@ -69,14 +75,17 @@ const QuoteGenerator = () => {
           <button className="twitter-button" id="twitter" title="Tweet This!">
             <i className="fab fa-twitter" />
           </button>
-          <button id="new-quote">New Quote</button>
+          <button id="new-quote" onClick={getQuote}>
+            New Quote
+          </button>
         </div>
       </div>
       {/* Loader */}
-      <div className="loader" id="loader" />
+      {/* <div className={showLoader? "loader": ""} id="loader" /> */}
+      <div className= {showLoader? "loader":""} id={showLoader} />
       {/* Script */}
     </div>
   )
 }
 
-export default QuoteGenerator
+export default Quote
