@@ -1,5 +1,5 @@
 import React from "react"
-import "../assets/css/main.css"
+import "../assets/quote-generator/main.css"
 import { useState } from "react"
 import styled from "styled-components"
 
@@ -59,7 +59,7 @@ const Quote = () => {
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css" //これfont-awesomeのSVGみたい
       />
-      {/* <link rel="stylesheet" href="style.css" /> */}
+      {/* Quoteのコンテナを見せる見せないをSsectionに送る */}
       <Ssection show={showLoader}>
         <div className="whole-container">
           <div className="quote-container" id="quote-container">
@@ -74,20 +74,19 @@ const Quote = () => {
             </div>
             {/* Buttons */}
             <div className="button-container">
-              <button
+              {/* <button
                 className="twitter-button"
                 id="twitter"
                 title="Tweet This!"
               >
                 <i className="fab fa-twitter" />
-              </button>
+              </button> */}
               <button id="new-quote" onClick={getQuote}>
                 New Quote
               </button>
             </div>
           </div>
-          {/* Loader */}
-          {/* <div className={showLoader? "loader": ""} id="loader" /> */}
+          {/*Quote呼び出し時 Loaderを見せる、見せない */}
           <div
             className={showLoader ? "loader" : ""}
             id={showLoader ? "loader" : ""}
@@ -136,7 +135,7 @@ const Ssection = styled.section`
   .button-container {
     margin-top: 15px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   & button {
