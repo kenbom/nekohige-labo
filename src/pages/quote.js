@@ -2,64 +2,20 @@ import React from "react"
 import "../assets/quote-generator/main.css"
 import { useState } from "react"
 import styled from "styled-components"
+import { useFetchQuote } from "../hooks/useFetchQuote"
+import MetaQuote from "../assets/quote-generator/MetaQuote"
 
 const Quote = () => {
-  const [author, setAuthor] = useState("")
-  const [sentence, setSentence] = useState("Quote Generator")
-  const [showLoader, setShowLoader] = useState(false)
-  const quoteText = ""
-  const loading = () => {
-    setShowLoader(true)
+  const { getQuote, author, sentence, showLoader } = useFetchQuote()
+  const onClickFetchQuote = () => {
+    getQuote()
   }
-  const complete = () => {
-    setShowLoader(false)
-  }
-  async function getQuote() {
-    loading()
-    const proxyUrl = "https://whispering-tor-04671.herokuapp.com/"
-    const apiUrl =
-      "http://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json"
-    try {
-      const response = await fetch(proxyUrl + apiUrl)
-      const data = await response.json()
-      console.log(data)
-      // If Author is blank, add 'Unknown'
-      if (data.quoteAuthor === "") {
-        setAuthor("unknown")
-      } else {
-        setAuthor(data.quoteAuthor)
-      }
-      // Reduce font size for long quotes
-      // if (data.quoteText.length > 120) {
-      //   quoteText.classList.add("long-quote")
-      // } else {
-      //   // quoteText.classList.remove("long-quote")
-      //   setSentence(data.quoteText)
-      // }
-
-      data.quoteText ? setSentence(data.quoteText) : setSentence("N.A")
-
-      // Stop Loader, Show Quote
-      complete()
-    } catch (error) {
-      getQuote()
-    }
-  }
+  
   return (
-    <div>
-      <meta charSet="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Quote Generator</title>
-      <link
-        rel="icon"
-        type="image/png"
-        href="https://s2.googleusercontent.com/s2/favicons?domain=jacinto.design"
-      />
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css" //これfont-awesomeのSVGみたい
-      />
-      {/* Quoteのコンテナを見せる見せないをSsectionに送る */}
+    <>
+     {/* PageMetaData　SEOは全く考慮なし */}
+    <MetaQuote></MetaQuote>
+      {/* Quoteのコンテナを見せる見せないをStyled-Cに送る */}
       <Ssection show={showLoader}>
         <div className="whole-container">
           <div className="quote-container" id="quote-container">
@@ -74,14 +30,7 @@ const Quote = () => {
             </div>
             {/* Buttons */}
             <div className="button-container">
-              {/* <button
-                className="twitter-button"
-                id="twitter"
-                title="Tweet This!"
-              >
-                <i className="fab fa-twitter" />
-              </button> */}
-              <button id="new-quote" onClick={getQuote}>
+              <button id="new-quote" onClick={onClickFetchQuote}>
                 New Quote
               </button>
             </div>
@@ -94,7 +43,7 @@ const Quote = () => {
           {/* Script */}
         </div>
       </Ssection>
-    </div>
+    </>
   )
 }
 
