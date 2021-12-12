@@ -1,9 +1,7 @@
-import React from "react"
-import { useState } from "react"
-import loader from "../assets/infinite-scroll/loader.svg"
+const imageContainer = document.getElementById('image-container');
+const loader = document.getElementById('loader');
 
-const Scroll = () => {
-  let photosArray = [];
+let photosArray = [];
 
 // Unsplash API
 const count = 10;
@@ -19,7 +17,6 @@ function setAttributes(element, attributes) {
 
 // Create Elements For Links & Photos, Add to DOM
 function displayPhotos() {
-  console.log(photosArray)
   // Run function for each object in photosArray
   photosArray.forEach((photo) => {
     // Create <a> to link to Unsplash
@@ -36,8 +33,8 @@ function displayPhotos() {
       title: photo.alt_description,
     });
     // Put <img> inside <a>, then put both inside imageContainer Element
-    // item.appendChild(img);
-    // imageContainer.appendChild(item);
+    item.appendChild(img);
+    imageContainer.appendChild(item);
   });
 }
 
@@ -61,24 +58,6 @@ window.addEventListener('scroll', () => {
     console.log('load more');
   }
 });
-return(
-        <div>
-          <meta charSet="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>Infinite Scroll</title>
-          <link rel="icon" type="image/png" href="https://s2.googleusercontent.com/s2/favicons?domain=www.jacinto.design" />
-          <link rel="stylesheet" href="style.css" />
-          {/* Title */}
-          <h1>Unsplash API - Infinite Scroll</h1>
-          <button onClick={getPhotos}>get photos</button>
-          {/* Loader */}
-          <div className="loader" id="loader" hidden>
-            <img src={loader} alt="Loading" />
-          </div>
-          {/* Image Container */}
-          <div className="image-container" id="image-container" />
-        </div>
-      );
-    }
 
-export default Scroll
+// On Load
+getPhotos();
